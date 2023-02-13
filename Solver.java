@@ -4,6 +4,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Comparator;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Solver {
 
@@ -170,15 +173,59 @@ public class Solver {
   }
 
   public static void main(String[] args) {
-    Solver solver = new Solver();
-    Object[][] input = { { 6, 7, 1 }, { 8, 2, "*" }, { 5, 4, 3 } }; // example input
 
+    File file = new File(args[1]);
+    ArrayList<Object> buffer = new ArrayList<Object>();
+
+    try {
+
+      Scanner sc = new Scanner(file);
+
+      while (sc.hasNextLine()) {
+          buffer.add(sc.next());
+
+      }
+      sc.close();
+    } 
+    catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    Object[][] input = new Object[3][3];
+
+    int index = 0;
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+          input[i][j] = buffer.get(index);
+          index++;
+      }
+  }
+
+    
+    Solver solver = new Solver();
     Board game = new Board(input);
     Node root = new Node(game);
 
-    System.out.println("Solving with Astar manhat...");
 
-    solver.dfs(root);
-
+    switch(args[0]) {
+      case "dfs":
+        System.out.println("Solving puzzle with Depth First Search...");
+        solver.dfs(root);
+        break;
+      case "ids":
+      System.out.println("Solving puzzle with Iterative Deepening Search...");
+        solver.ids(root);
+        break;
+      case "astar1":
+      System.out.println("Solving puzzle with A* (Hamming)...");
+        solver.astar1(root);
+        break;
+      case "astar2":
+        solver.astar2(root);
+        System.out.println("Solving puzzle with A* (Manhattan)...");
+        break;
+      default:
+        System.out.println("Algorithm Not Recognized.");
+    }
   }
 }

@@ -66,7 +66,7 @@ public class Board {
         int[] coords = { -1, -1 };
         for (int i = 0; i < this.grid.length; i++) {
             for (int j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == "*") {
+                if (this.grid[i][j].equals("*")) {
                     coords[0] = i;
                     coords[1] = j;
                 }
